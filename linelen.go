@@ -8,10 +8,20 @@ import (
 	"golang.org/x/tools/go/analysis"
 )
 
+var (
+	flagLen = 79
+	flagTab = 4
+)
+
 var Analyzer = &analysis.Analyzer{
-	Name: "lineLength",
-	Doc:  "Reports lines longer than 79 characters",
+	Name: "linelen",
+	Doc:  "reports lines longer than the specified character limit",
 	Run:  run,
+}
+
+func init() {
+	Analyzer.Flags.IntVar(&flagLen, "len", flagLen, "maximum line length")
+	Analyzer.Flags.IntVar(&flagTab, "tab", flagTab, "tab width in spaces")
 }
 
 func run(pass *analysis.Pass) (any, error) {
@@ -26,12 +36,12 @@ func run(pass *analysis.Pass) (any, error) {
 			return nil, fmt.Errorf("failed to open file: %w", err)
 		}
 		for raw := range strings.SplitSeq(string(src), "\n") {
-			line := strings.ReplaceAll(raw, "\t", "    ")
-			if len(line) > 79 {
+			line := strings.ReplaceAll(raw, "\t", strings.Repeat(" ", flagTab))
+			if len(line) > flagLen {
 				pass.Reportf(
 					file.Pos(pos),
-					"line is %d characters long, exceeds 79 limit",
-					len(line),
+					"line is %d characters long, exceeds %d limit",
+					len(line), flagLen,
 				)
 			}
 			pos += len(raw) + 1

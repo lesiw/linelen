@@ -29,22 +29,39 @@ func run(pass *analysis.Pass) (any, error) {
 		if ast.IsGenerated(f) {
 			continue
 		}
-		var pos int
+		ignore := make(map[int]struct{})
+		ast.Inspect(f, func(n ast.Node) bool {
+			switch node := n.(type) {
+			case *ast.ImportSpec:
+				ignore[pass.Fset.Position(node.Pos()).Line] = struct{}{}
+			case *ast.GenDecl:
+				if node.Tok.String() == "import" {
+					pos := pass.Fset.Position(node.Pos())
+					end := pass.Fset.Position(node.End())
+					for line := pos.Line; line <= end.Line; line++ {
+						ignore[line] = struct{}{}
+					}
+				}
+			}
+			return true
+		})
 		file := pass.Fset.File(f.FileStart)
 		src, err := pass.ReadFile(file.Name())
 		if err != nil {
 			return nil, fmt.Errorf("failed to open file: %w", err)
 		}
+		var n, pos int
 		for raw := range strings.SplitSeq(string(src), "\n") {
+			n++
 			line := strings.ReplaceAll(raw, "\t", strings.Repeat(" ", flagTab))
-			if len(line) > flagLen {
+			if _, skip := ignore[n]; !skip && len(line) > flagLen {
 				pass.Reportf(
 					file.Pos(pos),
 					"line is %d characters long, exceeds %d limit",
 					len(line), flagLen,
 				)
 			}
-			pos += len(raw) + 1
+			pos += len(raw) + 1 // len("\n")
 		}
 	}
 	return nil, nil

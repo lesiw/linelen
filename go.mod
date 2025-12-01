@@ -1,6 +1,6 @@
 module lesiw.io/linelen
 
-go 1.24.7
+go 1.24.4
 
 require (
 	golang.org/x/tools v0.36.0

@@ -1,3 +1,2 @@
 .editorconfig 3632ddbf531e998e5990a3d4e88b547fea86dd00
-.github/workflows/main.yml ae5f88a0fcfa6f030e86f80d52e92a37d2c7c72e
-.golangci.yml 6ef15a336d7b899769a6bb25b4ea9aa83aea57e9
+.github/workflows/main.yml e7eb16e18077fa46f813a1513744f7f24be2ead3

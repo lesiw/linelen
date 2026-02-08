@@ -2,6 +2,7 @@ package main
 
 import (
 	"golang.org/x/tools/go/analysis/singlechecker"
+
 	"lesiw.io/linelen"
 )
 

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"golang.org/x/tools/go/analysis/analysistest"
+
 	"lesiw.io/checker"
 )
 

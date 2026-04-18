@@ -53,6 +53,8 @@ func run(pass *analysis.Pass) (any, error) {
 		var n, pos int
 		for raw := range strings.SplitSeq(string(src), "\n") {
 			n++
+			rawLen := len(raw)
+			raw = strings.TrimRight(raw, "\r")
 			line := strings.ReplaceAll(raw, "\t", strings.Repeat(" ", flagTab))
 			if _, skip := ignore[n]; !skip && len(line) > flagLen {
 				pass.Reportf(
@@ -61,7 +63,7 @@ func run(pass *analysis.Pass) (any, error) {
 					len(line), flagLen,
 				)
 			}
-			pos += len(raw) + 1 // len("\n")
+			pos += rawLen + 1 // len("\n")
 		}
 	}
 	return nil, nil

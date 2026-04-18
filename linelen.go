@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go/ast"
 	"strings"
+	"unicode/utf8"
 
 	"golang.org/x/tools/go/analysis"
 )
@@ -56,11 +57,12 @@ func run(pass *analysis.Pass) (any, error) {
 			rawLen := len(raw)
 			raw = strings.TrimRight(raw, "\r")
 			line := strings.ReplaceAll(raw, "\t", strings.Repeat(" ", flagTab))
-			if _, skip := ignore[n]; !skip && len(line) > flagLen {
+			width := utf8.RuneCountInString(line)
+			if _, skip := ignore[n]; !skip && width > flagLen {
 				pass.Reportf(
 					file.Pos(pos),
 					"line is %d characters long, exceeds %d limit",
-					len(line), flagLen,
+					width, flagLen,
 				)
 			}
 			pos += rawLen + 1 // len("\n")

@@ -12,5 +12,5 @@ func TestCheck(t *testing.T) { checker.Run(t, Analyzer) }
 
 func TestAnalysisTest(t *testing.T) {
 	analysistest.Run(t, analysistest.TestData(), Analyzer,
-		"basic", "longimportblock", "longimportstmt")
+		"basic", "longimportblock", "longimportstmt", "methodwrap")
 }

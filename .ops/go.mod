@@ -3,7 +3,7 @@ module test/ops
 go 1.25.0
 
 require (
-	labs.lesiw.io/ops v0.0.0-20260406025327-9855c5f72bd7
+	labs.lesiw.io/ops v0.0.0-20260607234715-f070ae1043d8
 	lesiw.io/ops v0.15.0
 )
 
@@ -23,7 +23,7 @@ require (
 	lesiw.io/flag v0.7.0 // indirect
 	lesiw.io/fs v0.6.0 // indirect
 	lesiw.io/linelen v0.2.0 // indirect
-	lesiw.io/plscheck v0.21.0 // indirect
+	lesiw.io/plscheck v0.20.0 // indirect
 	lesiw.io/prefix v0.1.0 // indirect
 	lesiw.io/tidytypes v0.2.0 // indirect
 	lesiw.io/zeros v0.3.0 // indirect

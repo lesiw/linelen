@@ -3,6 +3,7 @@ package linelen
 import (
 	"fmt"
 	"go/ast"
+	"go/token"
 	"strings"
 	"unicode/utf8"
 
@@ -31,17 +32,42 @@ func run(pass *analysis.Pass) (any, error) {
 			continue
 		}
 		ignore := make(map[int]struct{})
+		ignoreRange := func(start, end token.Pos) {
+			startLine := pass.Fset.Position(start).Line
+			endLine := pass.Fset.Position(end).Line
+			for line := startLine; line <= endLine; line++ {
+				ignore[line] = struct{}{}
+			}
+		}
 		ast.Inspect(f, func(n ast.Node) bool {
 			switch node := n.(type) {
 			case *ast.ImportSpec:
 				ignore[pass.Fset.Position(node.Pos()).Line] = struct{}{}
 			case *ast.GenDecl:
 				if node.Tok.String() == "import" {
-					pos := pass.Fset.Position(node.Pos())
-					end := pass.Fset.Position(node.End())
-					for line := pos.Line; line <= end.Line; line++ {
-						ignore[line] = struct{}{}
+					ignoreRange(node.Pos(), node.End())
+				}
+			case *ast.FuncDecl:
+				// Function and method signatures may wrap across lines;
+				// the wrap is the user's chosen layout. The body still
+				// gets checked.
+				end := node.Type.End()
+				if node.Body != nil {
+					end = node.Body.Lbrace
+				}
+				ignoreRange(node.Pos(), end)
+			case *ast.InterfaceType:
+				// Interface methods are *ast.Field entries whose Type
+				// is *ast.FuncType. The whole field span is the
+				// signature; let it wrap.
+				if node.Methods == nil {
+					return true
+				}
+				for _, field := range node.Methods.List {
+					if _, ok := field.Type.(*ast.FuncType); !ok {
+						continue
 					}
+					ignoreRange(field.Pos(), field.End())
 				}
 			}
 			return true

@@ -26,3 +26,5 @@ lesiw.io/tidytypes v0.2.0 h1:U/MI+Cwm5ShPEBEnKuVHtyU7o46gW4zPUojBUhd+/YM=
 lesiw.io/tidytypes v0.2.0/go.mod h1:RiOthB+QiQSCAwPA7SyTO86XN/crZekhwDCfAUivIcA=
 lesiw.io/tools v0.2.1-0.20260805015709-c336d0b770b5 h1:Cob7maxKPBNq/qrgO7XQnCjTpavW2wHR4OhqbbU/pII=
 lesiw.io/tools v0.2.1-0.20260805015709-c336d0b770b5/go.mod h1:GFhf4+sdzv108nF9qaGWyHWXIfFHPVmlXUrgX5V0kK8=
+lesiw.io/tools v0.3.0 h1:/vsJtlkrrOcAjfWXcdYIsdjLJ9R/CvXYv4w5ZSeAhNs=
+lesiw.io/tools v0.3.0/go.mod h1:/NZ4m5YNFHqmfxjqi4e0laGGbA/ST52v8dd7V98TIKc=

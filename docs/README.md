@@ -18,15 +18,13 @@ limit of 79 and a tab width of 4 — are flags.
 
 ### Lines over the limit
 
-```go
-	return fmt.Errorf("failed to reticulate splines for %q at offset %d: %w", name, off, err) // line is 93 characters long, exceeds 79 limit
-```
-
-Positions where wrapping is the author's layout are exempt: import
-declarations, and function, method, and interface method
-signatures — a signature stays on one line or wraps as its author
-chose, while the body is still checked. Generated files are
-skipped: a generated line cannot be reflowed by hand.
+Lines wider than the limit are reported with their measured width.
+A tab counts four columns by default. Positions where wrapping is
+the author's layout are exempt: import declarations, and function,
+method, and interface method signatures. A signature stays on one
+line or wraps as its author chose, while the body is still
+checked. Generated files are skipped, since a generated line
+cannot be reflowed by hand.
 
 ## Usage
 

@@ -1,6 +1,6 @@
 module lesiw.io/linelen
 
-go 1.26.0
+go 1.25.0
 
 require (
 	golang.org/x/tools v0.48.0
@@ -17,7 +17,7 @@ require (
 	lesiw.io/errcheck v1.0.0 // indirect
 	lesiw.io/plscheck v0.20.0 // indirect
 	lesiw.io/tidytypes v0.2.0 // indirect
-	lesiw.io/tools v0.2.0 // indirect
+	lesiw.io/tools v0.2.1-0.20260805015709-c336d0b770b5 // indirect
 )
 
 tool (

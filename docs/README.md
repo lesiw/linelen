@@ -18,13 +18,16 @@ limit of 79 and a tab width of 4 — are flags.
 
 ### Lines over the limit
 
-Lines wider than the limit are reported with their measured width.
-A tab counts four columns by default. Positions where wrapping is
-the author's layout are exempt: import declarations, and function,
-method, and interface method signatures. A signature stays on one
-line or wraps as its author chose, while the body is still
-checked. Generated files are skipped, since a generated line
-cannot be reflowed by hand.
+A line wider than the limit is reported with its measured width.
+A tab counts four columns by default. A line is not reported when:
+
+- It is an import declaration.
+- It is a function, method, or interface method signature. A
+  signature stays on one line or wraps as its author chose, while
+  the body is still measured.
+- It is in a generated file.
+- One continuous string literal or URL takes up more than half of
+  the line's width, ignoring indentation.
 
 ## Usage
 

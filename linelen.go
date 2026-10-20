@@ -227,7 +227,8 @@ func astLits(fset *token.FileSet, f *ast.File) map[int][]span {
 			}
 			if to > from {
 				out[line] = append(out[line],
-					span{pos: from - start, end: to - start})
+					span{pos: from - start, end: to - start},
+				)
 			}
 		}
 		return true
@@ -312,10 +313,7 @@ func run(pass *analysis.Pass) (any, error) {
 			return nil, fmt.Errorf("failed to open file: %w", err)
 		}
 		for _, l := range cfg.CheckFile(pass.Fset, f, src) {
-			pass.Reportf(l.Pos,
-				"line is %d characters long, exceeds %d limit",
-				l.Width, cfg.len(),
-			)
+			pass.Reportf(l.Pos, "line is %d characters long, exceeds %d limit", l.Width, cfg.len())
 		}
 	}
 	return nil, nil

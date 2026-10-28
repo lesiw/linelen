@@ -50,7 +50,7 @@ func (c Config) Width(line []byte) (width int) {
 
 // Line describes a line of a source file.
 type Line struct {
-	N     int       // 1-based line number
+	N     int       // 1-based line number the file is written on
 	Width int       // visual width in columns
 	Pos   token.Pos // position of the line's first byte
 }
@@ -200,6 +200,13 @@ func scanLits(line []byte) (out []span) {
 	return out
 }
 
+// writtenLines returns the first and last line pos and end are written on,
+// ignoring //line directives. The line table is indexed by the lines the file
+// is written on, and a directive can name a line past its end.
+func writtenLines(fset *token.FileSet, pos, end token.Pos) (first, last int) {
+	return fset.PositionFor(pos, false).Line, fset.PositionFor(end, false).Line
+}
+
 // astLits maps a line number to the parts of string literals on it,
 // as byte ranges within the line. A literal that spans lines
 // contributes the part on each line.
@@ -215,7 +222,7 @@ func astLits(fset *token.FileSet, f *ast.File) map[int][]span {
 			return true
 		}
 		pos, end := file.Offset(lit.Pos()), file.Offset(lit.End())
-		first, last := file.Line(lit.Pos()), file.Line(lit.End())
+		first, last := writtenLines(fset, lit.Pos(), lit.End())
 		for line := first; line <= last; line++ {
 			var (
 				start = file.Offset(file.LineStart(line))
@@ -244,7 +251,7 @@ func checked(fset *token.FileSet, f *ast.File) func(line int) bool {
 	var (
 		skip = make(map[int]struct{})
 		mark = func(start, end token.Pos) {
-			s, e := fset.Position(start).Line, fset.Position(end).Line
+			s, e := writtenLines(fset, start, end)
 			for line := s; line <= e; line++ {
 				skip[line] = struct{}{}
 			}

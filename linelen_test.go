@@ -85,6 +85,6 @@ func TestCheckLine(t *testing.T) {
 func TestAnalysisTest(t *testing.T) {
 	analysistest.Run(t, testdataDir(t), Analyzer,
 		"basic", "longimportblock", "longimportstmt",
-		"methodwrap", "continuous",
+		"methodwrap", "continuous", "linedirective",
 	)
 }

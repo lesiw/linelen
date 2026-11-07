@@ -1,3 +1,6 @@
+> [!NOTE]
+> This repository has moved to [lesiw.io/tools/analyzers/linelen](https://github.com/lesiw/tools/tree/main/analyzers/linelen).
+
 # lesiw.io/linelen
 
 [![Go Reference](https://pkg.go.dev/badge/lesiw.io/linelen.svg)](https://pkg.go.dev/lesiw.io/linelen)
